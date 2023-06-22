@@ -9,32 +9,29 @@ import UIKit
 
 class ResultViewController: UIViewController {
     
-    // 1. Избавиться от кнопки возврата назад на экране результатов +
-    // 2. Передать массив с ответами на экран с результатами
-    // 3. Определить наиболее часто встречающийся тип животного
-    // 4. Отобразить результаты в соответствии с этим животным
+    @IBOutlet var choosenAnimalLabel: UILabel!
+    @IBOutlet var descriptionAnimalLabel: UILabel!
     
     var receivedAnswers: [Answer] = []
-    var animalCounts = [PersonalQuiz.Animal: Int]()
-
-
-        
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            navigationItem.hidesBackButton = true
-            countAllAnimals()
-            countMostCommonAnimal()
-        }
-        
-        @IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
-            dismiss(animated: true)
-        }
-        
-        deinit {
-            print("\(type(of: self)) has been deallocated")
-        }
+    var animalCounts = [Animal: Int]()
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.hidesBackButton = true
+        countAllAnimals()
+        countMostCommonAnimal()
     }
- 
+    
+    @IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true)
+    }
+    
+    deinit {
+        print("\(type(of: self)) has been deallocated")
+    }
+}
+
 private extension ResultViewController {
     func countAllAnimals() {
         for answer in receivedAnswers {
@@ -47,9 +44,9 @@ private extension ResultViewController {
     }
     
     func countMostCommonAnimal() {
-        var mostCommonAnimal: PersonalQuiz.Animal?
+        var mostCommonAnimal: Animal!
         var maxCount = 0
-
+        
         for (animal, count) in animalCounts {
             if count > maxCount {
                 mostCommonAnimal = animal
@@ -57,6 +54,7 @@ private extension ResultViewController {
             }
         }
         
-        print("Чаще всего встречается \(mostCommonAnimal)")
+        choosenAnimalLabel.text = "Вы - \(mostCommonAnimal.rawValue)"
+        descriptionAnimalLabel.text = mostCommonAnimal.definition
     }
 }
